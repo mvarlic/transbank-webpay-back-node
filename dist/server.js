@@ -14,11 +14,7 @@ const port = 3000;
 app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-/*
-app.get( "/", ( req, res ) => {
-  res.send( "Hello world!" );
-} );*/
-// index page
+app.use(express_1.default.static(__dirname + '/public'));
 app.get('/', function (req, res) {
     res.render('index');
 });

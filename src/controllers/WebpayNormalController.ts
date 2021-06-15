@@ -7,15 +7,17 @@ const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
 }
 
+const getWebPay = () => {
+  const configuration = Transbank.Configuration.forTestingWebpayPlusNormal()
+  return new Transbank.Webpay(configuration).getNormalTransaction()
+}
+
 class WebpayPlusController {
   static init (req: any, res: any) {
     console.log('================================================WebpayPlusController.init================================================');
-    const configuration = Transbank.Configuration.forTestingWebpayPlusNormal()
-    const Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
     const url = "http://" + req.get("host")
     const amount = 1500
-
-    Webpay.initTransaction(
+    getWebPay().initTransaction(
       amount,
       "Orden" + getRandomInt(10000, 99999),
       req.sessionId,
@@ -29,21 +31,9 @@ class WebpayPlusController {
   }
 
   static response (req: any, res: any) {
-    // Esta inicialización que se repite, es mejor llevarla a nu lugar en donde
-    // se pueda reutilizar. Por simplicidad, en este ejemplo está el código
-    // duplicado en cada método
-    console.log('response => ');
-
-
-    const configuration = Transbank.Configuration.forTestingWebpayPlusNormal()
-    const Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
-
+    console.log('================================================WebpayPlusController.response================================================');
     const token = req.body.token_ws
-
-
-    res.json({ token });
-
-    Webpay.getTransactionResult(token).then((response:any) => {
+    getWebPay().getTransactionResult(token).then((response:any) => {
       transactions[token] = response
       res.render("redirect-transbank",
         { url: response.urlRedirection, token, inputName: "token_ws" })
@@ -54,7 +44,7 @@ class WebpayPlusController {
   }
 
   static finish (req: any, res: any) {
-    console.log('finish => ');
+    console.log('================================================WebpayPlusController.finish================================================');
 
 
     let status = null;
@@ -64,7 +54,6 @@ class WebpayPlusController {
     if (typeof req.body.TBK_TOKEN !== "undefined") {
       status = 'ABORTED';
     }
-
     if (typeof req.body.token_ws !== "undefined") {
       transaction = transactions[req.body.token_ws];
       if (transaction.detailOutput[0].responseCode === 0) {
@@ -73,15 +62,14 @@ class WebpayPlusController {
         status = 'REJECTED';
       }
     }
-
     // Si no se recibió ni token_ws ni TBK_TOKEN, es un usuario que entró directo
     if (status === null) {
       return res.status(404).send("Not found.");
     }
-
-
-    return res.render("webpay-normal/finish", { transaction, status })
-
+    //transacción, como el código de autorización, los últimos números de la tarjeta y el tipo de tarjeta utilizada 
+    console.log(transaction)
+    let result = `La transacción se ha ejecutado correctamente => tarjeta: 'XXXX XXXX XXXX ${transaction.cardDetail.cardNumber}' ,codigo de autorizacion: '${transaction.detailOutput[0].authorizationCode}'`;
+    return res.render("webpay-normal/finish", { result, transaction, status })
   }
 }
 

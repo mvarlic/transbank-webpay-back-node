@@ -11,13 +11,7 @@ app.set( "views", path.join( __dirname, "views" ) );
 app.set( "view engine", "ejs" );
 
 app.use(bodyParser.urlencoded({ extended: true }))
-
-/*
-app.get( "/", ( req, res ) => {
-  res.send( "Hello world!" );
-} );*/
-
-// index page
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
   res.render('index');
