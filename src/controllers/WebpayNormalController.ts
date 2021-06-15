@@ -4,39 +4,27 @@ const transactions: any = {}
 const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
 }
 
 class WebpayPlusController {
   static init (req: any, res: any) {
     console.log('================================================WebpayPlusController.init================================================');
     const configuration = Transbank.Configuration.forTestingWebpayPlusNormal()
-    let Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
-    let url = "http://" + req.get("host")
-    let amount = 1500
-    try {
-      Webpay.initTransaction(
-        amount,
-        "Orden" + getRandomInt(10000, 99999),
-        req.sessionId,
-        url + "/webpay-normal/response",
-        url + "/webpay-normal/finish").then((data: any) => {
-          console.log('WebpayPlusController.terminandooooooo => ', data);
-          /*
-        transactions[data.token] = { amount: amount }
-        res.render("redirect-transbank",
-          { url: data.url, token: data.token, inputName: "TBK_TOKEN" })*/
-      })
-    } catch (error) {
-      console.log('================================================ WebpayPlusController.init ERROR ================================================');
-      console.error(error);
+    const Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
+    const url = "http://" + req.get("host")
+    const amount = 1500
 
-      res.json({ 
-        anObject: { item1: "item1val", item2: "item2val" }, 
-        anArray: ["item1", "item2"], 
-        another: "item"
-      });
-    }
+    Webpay.initTransaction(
+      amount,
+      "Orden" + getRandomInt(10000, 99999),
+      req.sessionId,
+      url + "/webpay-normal/response",
+      url + "/webpay-normal/finish").then((data: any) => {
+      transactions[data.token] = { amount: amount }
+      res.render("redirect-transbank",
+        { url: data.url, token: data.token, inputName: "TBK_TOKEN" })
+    })
 
   }
 
@@ -48,20 +36,21 @@ class WebpayPlusController {
 
 
     const configuration = Transbank.Configuration.forTestingWebpayPlusNormal()
-    let Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
+    const Webpay = new Transbank.Webpay(configuration).getNormalTransaction()
 
-    let token = req.body.token_ws
-    
+    const token = req.body.token_ws
+
 
     res.json({ token });
-    /*
-    Webpay.getTransactionResult(token).then((response: any) => {
+
+    Webpay.getTransactionResult(token).then((response:any) => {
       transactions[token] = response
-      res.render("redirect-transbank",{ url: response.urlRedirection, token, inputName: "token_ws" })
+      res.render("redirect-transbank",
+        { url: response.urlRedirection, token, inputName: "token_ws" })
     }).catch((e: any) => {
       console.log(e)
       res.send("Error")
-    })*/
+    })
   }
 
   static finish (req: any, res: any) {
