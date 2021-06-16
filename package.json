@@ -2,20 +2,14 @@
   "name": "transbank-webpay-back-node",
   "version": "1.0.0",
   "description": "Proyecto Typescript ejemplo usando sdk transbank",
-  "main": "dist/server.js",
+  "main": "server.js",
   "engines": {
     "node": "12.x",
     "npm": "6.x"
   },
   "scripts": {
-    "clean": "rimraf dist/*",
-    "copy-assets": "ts-node tools/copyAssets",
-    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
-    "tsc": "tsc",
-    "build": "npm-run-all clean tsc copy-assets",
-    "dev:start": "npm-run-all build start",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
-    "start": "node .",
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon -x ts-node src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
