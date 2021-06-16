@@ -12,7 +12,7 @@ const getWebPay = () => {
   return new Transbank.Webpay(configuration).getNormalTransaction()
 }
 
-class WebpayPlusController {
+export class WebpayPlusController {
   static init (req: any, res: any) {
     console.log('================================================WebpayPlusController.init================================================');
     const url = "http://" + req.get("host")
@@ -73,4 +73,3 @@ class WebpayPlusController {
   }
 }
 
-module.exports = WebpayPlusController

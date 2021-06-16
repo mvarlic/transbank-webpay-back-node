@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from "path";
-const WebpayPlusController = require('./controllers/WebpayNormalController')
+import { WebpayPlusController } from './controllers/WebpayNormalController';
+
 const app = express();
 const PORT : string|number = process.env.PORT || 3000;
 
