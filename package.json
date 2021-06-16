@@ -4,6 +4,7 @@
   "description": "Proyecto Typescript ejemplo usando sdk transbank",
   "main": "dist/server.js",
   "engines": {
+    "node": "12.x",
     "npm": "6.x"
   },
   "scripts": {
@@ -15,7 +16,8 @@
     "dev:start": "npm-run-all build start",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "web": "node dist/server.js"
   },
   "repository": {
     "type": "git",
