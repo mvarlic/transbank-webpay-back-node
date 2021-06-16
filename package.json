@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Proyecto Typescript ejemplo usando sdk transbank",
   "main": "dist/server.js",
+  "engines": {
+    "npm": "6.x"
+  },
   "scripts": {
     "clean": "rimraf dist/*",
     "copy-assets": "ts-node tools/copyAssets",
