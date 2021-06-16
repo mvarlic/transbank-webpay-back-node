@@ -1,10 +1,17 @@
 # Proyecto Typescript ejemplo usando sdk Transbank 
 
+Para ejecutar la app
+```bash
+node run dev
+```
+
+
+
 Tarjeta para compra exitosa
 ```bash
 4051 8856 0044 6623
 CCV: 123
-11/22 (cualquier fecha futura)
+11/22 (cualquier fecha futura a la actual)
 ```
 
 Datos a usar en transbank:
