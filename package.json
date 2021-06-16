@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Proyecto Typescript ejemplo usando sdk transbank",
   "main": "server.js",
-  "engines": {
-    "node": "12.x",
-    "npm": "6.x"
-  },
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon -x ts-node src/server.ts",
